@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}SoleVault - Premium Footwear & Sneakers{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <header class="top-bar">
+    <div class="container top-bar-content">
+      <div class="top-bar-tag">
+        <span class="badge-pill">SPECIAL OFFER</span>
+        <span>Free Express Shipping on all orders over $100! 🚀</span>
+      </div>
+      <div style="display: flex; gap: 18px; font-size: 12px;">
+        <span>Authenticity 100% Guaranteed</span>
+        <span>•</span>
+        <span>30-Day Hassle Free Returns</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Navigation Bar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <!-- Brand Logo -->
+      <a href="{% url 'home' %}" class="brand-logo">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 17l6-6 4 4 6-6"/>
+            <path d="M14 5h6v6"/>
+          </svg>
+        </div>
+        <span>Sole<span class="brand-highlight">Vault</span></span>
+      </a>
+
+      <!-- Search Form -->
+      <form action="{% url 'home' %}" method="GET" class="search-form">
+        <input 
+          type="text" 
+          name="q" 
+          value="{{ query|default:'' }}" 
+          placeholder="Search sneakers, running shoes, brands..." 
+          class="search-input"
+          autocomplete="off"
+        >
+        <button type="submit" class="search-btn" title="Search shoes">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </form>
+
+      <!-- Nav Actions -->
+      <div class="nav-actions">
+        <a href="{% url 'home' %}" class="nav-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          <span>Shop</span>
+        </a>
+
+        {% if user.is_authenticated %}
+          <a href="{% url 'order_history' %}" class="nav-link" title="My Orders & Tracking">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            <span>My Orders</span>
+          </a>
+
+          <div class="user-menu-btn" title="Signed in as {{ user.username }}">
+            <div class="user-avatar-initial">{{ user.username|make_list|first|upper }}</div>
+            <span>{{ user.first_name|default:user.username }}</span>
+          </div>
+
+          <a href="{% url 'logout' %}" class="btn btn-outline btn-sm" title="Sign Out">
+            <span>Logout</span>
+          </a>
+        {% else %}
+          <a href="{% url 'login' %}" class="nav-link">Sign In</a>
+          <a href="{% url 'register' %}" class="btn btn-primary btn-sm">Create Account</a>
+        {% endif %}
+
+        <!-- Shopping Cart Icon -->
+        <a href="{% url 'cart' %}" class="cart-icon-btn" title="View Cart">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span id="navCartBadge" class="cart-badge">{{ nav_cart_count }}</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Global Flash Messages -->
+  <div class="container messages-container">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          <span>{{ message }}</span>
+          <button type="button" class="alert-close" aria-label="Close">&times;</button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <!-- Main Content Block -->
+  <main style="flex: 1;">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand-logo" style="color: #ffffff; margin-bottom: 14px;">
+            <div class="brand-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 17l6-6 4 4 6-6"/></svg>
+            </div>
+            <span>Sole<span class="brand-highlight">Vault</span></span>
+          </div>
+          <p style="font-size: 14px; line-height: 1.6; color: #94a3b8; max-width: 320px;">
+            Your premier destination for verified authentic sneakers, high-performance running shoes, and luxury lifestyle footwear.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Shoe Categories</h4>
+          <ul class="footer-links">
+            <li><a href="{% url 'home' %}?category=sneakers">Sneakers & Retro</a></li>
+            <li><a href="{% url 'home' %}?category=running">Running & Athletics</a></li>
+            <li><a href="{% url 'home' %}?category=sports">Basketball & Sports</a></li>
+            <li><a href="{% url 'home' %}?category=casual">Casual & Lifestyle</a></li>
+            <li><a href="{% url 'home' %}?category=boots">Outdoor & Boots</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Buyer Support</h4>
+          <ul class="footer-links">
+            <li><a href="{% url 'order_history' %}">Track Your Order</a></li>
+            <li><a href="{% url 'cart' %}">Shopping Cart</a></li>
+            <li><a href="#">Size Conversion Guide</a></li>
+            <li><a href="#">Return Policy</a></li>
+            <li><a href="#">Help Center & FAQ</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title">Secure Shopping</h4>
+          <p style="font-size: 13px; color: #94a3b8; margin-bottom: 16px;">
+            Encrypted 256-bit SSL transaction protection for all payments.
+          </p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <span style="background: rgba(255,255,255,0.08); padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; color: #fff;">VISA</span>
+            <span style="background: rgba(255,255,255,0.08); padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; color: #fff;">MASTERCARD</span>
+            <span style="background: rgba(255,255,255,0.08); padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; color: #fff;">UPI</span>
+            <span style="background: rgba(255,255,255,0.08); padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; color: #fff;">APPLE PAY</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 SoleVault Inc. All rights reserved. Built with Django & SQL backend.</div>
+        <div style="display: flex; gap: 20px;">
+          <a href="#" style="color: #94a3b8;">Privacy Policy</a>
+          <a href="#" style="color: #94a3b8;">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{% static 'js/app.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

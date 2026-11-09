@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Buyer Account | SoleVault{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <div class="auth-header">
+      <div class="brand-icon" style="margin: 0 auto 14px auto;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 17l6-6 4 4 6-6"/></svg>
+      </div>
+      <h1 class="auth-title">Create Buyer Account</h1>
+      <p class="auth-subtitle">Join SoleVault for instant order tracking and VIP sneaker drops</p>
+    </div>
+
+    <form method="POST" action="{% url 'register' %}">
+      {% csrf_token %}
+      {% if request.GET.next %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+      {% endif %}
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input type="text" name="first_name" class="form-control" placeholder="Alex" value="{{ first_name|default:'' }}" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input type="text" name="last_name" class="form-control" placeholder="Mercer" value="{{ last_name|default:'' }}">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Username *</label>
+        <input type="text" name="username" class="form-control" placeholder="Choose a username" value="{{ username|default:'' }}" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email Address *</label>
+        <input type="email" name="email" class="form-control" placeholder="you@example.com" value="{{ email|default:'' }}" required>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">Password *</label>
+          <input type="password" name="password" class="form-control" placeholder="Min. 6 characters" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Confirm Password *</label>
+          <input type="password" name="confirm_password" class="form-control" placeholder="Repeat password" required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-full btn-lg" style="margin-top: 10px;">
+        Register & Shop Now
+      </button>
+    </form>
+
+    <div class="auth-switch">
+      Already have a buyer account? 
+      <a href="{% url 'login' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">Sign In</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
