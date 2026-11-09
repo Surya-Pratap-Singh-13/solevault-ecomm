@@ -1,1 +1,1 @@
-web: gunicorn shoestore.wsgi:application
+web: gunicorn shoestore.wsgi:application --bind 0.0.0.0:$PORT

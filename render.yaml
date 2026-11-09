@@ -2,14 +2,14 @@ services:
   - type: web
     name: solevault-ecommerce
     runtime: python
-    buildCommand: "./build.sh"
-    startCommand: "gunicorn shoestore.wsgi:application"
+    buildCommand: "bash build.sh"
+    startCommand: "gunicorn shoestore.wsgi:application --bind 0.0.0.0:$PORT"
     envVars:
       - key: DEBUG
         value: "False"
       - key: SECRET_KEY
         generateValue: true
       - key: ALLOWED_HOSTS
-        value: ".onrender.com,localhost,127.0.0.1"
+        value: "*"
       - key: CSRF_TRUSTED_ORIGINS
         value: "https://*.onrender.com"
